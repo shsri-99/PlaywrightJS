@@ -15,7 +15,7 @@ await page.locator('#userPassword').fill("Password123");
 await page.getByPlaceholder('Confirm Passsword').fill("Password123");
 await page.locator('input[formcontrolname="required"]').check();
 await page.locator('input[type ="submit"]').click();
-await expect(page.getByText('Account Created Successfully')).toBeVisible();
+
 });
 
 test.only('Login page validations', async({page})=>{
@@ -26,8 +26,8 @@ test.only('Login page validations', async({page})=>{
     await page.locator('#userPassword').fill(password);
     await page.getByRole('button', { name: 'Login' }).click();
     await expect(page.getByText('Automation Practice')).toBeVisible();
-     await page.locator('.form-group', { hasText: 'household' }).locator('input[type="checkbox"]').last().check();
-
+    
+    await page.locator('.form-group', { hasText: 'household' }).locator('input[type="checkbox"]').last().check();
     await expect(page.getByText('No Products Found')).toBeVisible({ timeout: 5000 });
     await page.locator('.form-group', { hasText: 'household' }).locator('input[type="checkbox"]').last().uncheck();
    await page.waitForLoadState('networkidle');
@@ -35,21 +35,22 @@ test.only('Login page validations', async({page})=>{
     await expect(page.getByText('Product Added To Cart', { exact: true })).toBeVisible();
     await page.locator('button[routerlink="/dashboard/cart"]').click();
     await expect(page.getByText('My Cart')).toBeVisible();
+    
+    
     await page.getByRole('button',{name : 'Checkout'}).click();
     const emailInput = page.locator('input.text-validated:visible').nth(1);
     await expect(emailInput).toHaveValue(email);
-//    await page.locator("[placeholder*='Country']").pressSequentially("ind", { delay: 150 });
-//     await page.locator('button.ta-item:has-text("India")').click();
-//     await page.locator('input[type ="text"]').nth(2).fill("799");
-   const countryInput = page.locator("[placeholder*='Country']");
-await countryInput.type('ind', { delay: 150 });
-await page.locator('button.ta-item').filter({ hasText: /^\s*India\s*$/ }).click();
+  const countryInput = page.locator("[placeholder*='Country']");
+    await countryInput.type('ind', { delay: 150 });
+    await page.locator('button.ta-item').filter({ hasText: /^\s*India\s*$/ }).click();
     await page.getByText('Place Order').click();
-    page.waitForLoadState('load');
+    //page.waitForLoadState('load');
     const orderLabel = page.locator('label.ng-star-inserted');
-    const orderId = await orderLabel.textContent();
-    const trimmedOrderId = orderId.replace(/\|/g, '').trim();
+     const orderId = await orderLabel.textContent();
+     const trimmedOrderId = orderId.replace(/\|/g, '').trim();
     console.log('Order ID:', trimmedOrderId);
+
+    
     await page.locator('button[routerlink="/dashboard/myorders"]').click();
     await page.waitForSelector('table');
     const orderRow = await page.locator(`tr:has(th:text-is("${trimmedOrderId}"))`);

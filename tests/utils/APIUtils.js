@@ -19,20 +19,19 @@ class APIUtils {
     return token;
   }
 
-  async AddItemToCartAPI(ItemLoad){
+  async AddItemToCartAPI(token,ItemLoad){
     let response = {};
-    response.token = await this.getToken();
    const itemResponse = await this.apiContext.post(
       "https://rahulshettyacademy.com/api/ecom/user/add-to-cart",
       {
         data: ItemLoad,
         headers: {
-          Authorization: await response.token,// <-- IMPORTANT
-          'Content-Type': 'application/json'
+          Authorization:token,
+          "Content-Type": "application/json"
         }
       }
     );
-    await console.log("Token sending in this call: ",response.token);
+    await console.log("Token sending in this call:",token);
     console.log('Status:', itemResponse.status());
     const itemResponseJson = await itemResponse.json();
     console.log(itemResponseJson);
