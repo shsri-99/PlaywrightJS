@@ -26,9 +26,11 @@ await page.addInitScript((value) => {
   }, token);
 });
 
-test('@Web Login using API and add item to cart', async({page})=>{
+test('@Add item to cart', async({page})=>{
 const loginpage = new LoginPO(page);
 const cart = new CartPO(page);
+const apicall = new APIUtils(page);
+
 const checkoutpage = new CheckoutPO(page);
 await loginpage.navigateLogin(dataset.loginlink);
 await page.goto(dataset.loginlink);
@@ -37,8 +39,12 @@ await cart.clickAddToCartByIndex(2);
 await expect(cart.productAddedLocator()).toBeVisible();
 await cart.goToCart();
 await expect(page.getByText('My Cart')).toBeVisible();
+});
 
+test('@Web Verify order id', async({page})=>{
 await page.goto(dataset.loginlink);
+const apiResponse = new APIUtils.AddItemToCartAPI(token, itemPayload);
+console.log("Item Added via API:", apiResponse);
 await cart.goToCart();
 await page.waitForLoadState('networkidle');
 await checkoutpage.clickCheckout();
