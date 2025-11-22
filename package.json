@@ -6,7 +6,8 @@
   "scripts": {
     "regression": "npx playwright test",
     "webTests": "npx playwright test --grep @Web",
-    "APITests": "npx playwright test --grep @API"
+    "APITests": "npx playwright test --grep @API",
+    "AllureWeb": "npx playwright test --grep @Web --reporter=line,allure-playwright"
   },
   "keywords": [],
   "author": "",

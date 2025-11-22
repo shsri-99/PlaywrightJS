@@ -3,16 +3,10 @@ class CartPO{
         this.page = page;
         this.cartButton = page.locator('button[routerlink="/dashboard/cart"]');
         this.addToCartButtons = ( ) => this.page.getByRole('button', { name: 'Add To Cart' });
+        this.alert = page.getByText('No Products Found');
         this.productAddedText = 'Product Added To Cart';
         this.myCartText = 'My Cart';
     }
-
-    lastCheckboxInGroup(groupText) {
-    return this.page
-      .locator('.form-group', { hasText: groupText })
-      .locator('input[type="checkbox"]')
-      .last().check();
-  }
 
   
   // wait for network idle (useful after actions that trigger network)
@@ -39,6 +33,28 @@ class CartPO{
     await this.cartButton.click();
   }
 
+   lastCheckboxInGroup(label) {
+    return this.page
+      .locator('.form-group', { hasText: label })
+      .locator('input[type="checkbox"]')
+      .last();
+  }
+
+ 
+  async selectCheckbox(label) {
+  const checkBox= this.lastCheckboxInGroup(label);
+  await checkBox.check();
+}
+
+   async alertMessage(){
+    return this.alert;
+   } 
+
+
+async unselectCheckbox(label) {
+  const checkBox= this.lastCheckboxInGroup(label);
+  await checkBox.uncheck();
+} 
 }
 
 module.exports = { CartPO };
